@@ -48,7 +48,7 @@
         h1 {
             font-size: xx-large;
             color: #ffffff;
-            margin-bottom: 2rem;
+            margin-bottom: 4rem;
             font-weight: 300;
             letter-spacing: 0.15em;
             text-transform: none;
@@ -58,7 +58,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 3rem;
+            gap: clamp(0.5rem, 2vw, 3rem);
             max-width: 100%;
             width: 100%;
             margin: 0 auto;
@@ -70,15 +70,16 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            padding: 4rem 3rem;
-            border-radius: 20px;
+            padding: clamp(0.5rem, 3vh, 4rem) clamp(0.5rem, 2vw, 3rem);
+            border-radius: clamp(10px, 2vh, 20px);
             transition: all 0.3s ease;
             flex: 1;
             max-width: 280px;
+            min-width: 0;
         }
 
         .time-value {
-            font-size: clamp(4rem, 10vw, 10rem);
+            font-size: 6rem;
             font-weight: 200;
             display: block;
             line-height: 1;
@@ -86,12 +87,32 @@
         }
 
         .time-label {
-            font-size: clamp(1rem, 2.5vw, 1.8rem);
+            font-size: 1.2rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            margin-top: 1.5rem;
+            margin-top: clamp(0.3rem, 1.5vh, 1.5rem);
             color: rgba(255, 255, 255, 0.7);
             font-weight: 300;
+        }
+
+        /* Landscape orientation adjustments */
+        @media (max-height: 400px) and (orientation: landscape) {
+            body {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                margin-bottom: 2rem;
+            }
+
+            .countdown {
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .time-box {
+                padding: 0.5rem 0.8rem;
+            }
         }
 
         .message {
