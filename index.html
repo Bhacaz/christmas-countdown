@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Countdown</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
@@ -20,6 +14,7 @@
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
+            overflow-y: hidden;
             position: relative;
             padding: 1rem;
         }
@@ -82,31 +77,6 @@
             max-width: 280px;
         }
 
-        .time-box:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .time-box.pulse {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
-            animation: pulseEffect 0.3s ease;
-        }
-
-        @keyframes pulseEffect {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-5px) scale(1.02);
-            }
-            100% {
-                transform: translateY(-5px) scale(1);
-            }
-        }
-
         .time-value {
             font-size: clamp(4rem, 10vw, 10rem);
             font-weight: 200;
@@ -144,160 +114,11 @@
         .time-box:nth-child(4) {
             border-color: rgba(234, 179, 8, 0.3);
         }
-
-        .time-box:nth-child(1):hover {
-            box-shadow: 0 0 30px rgba(220, 38, 38, 0.3);
-        }
-
-        .time-box:nth-child(2):hover {
-            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
-        }
-
-        .time-box:nth-child(3):hover {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-        }
-
-        .time-box:nth-child(4):hover {
-            box-shadow: 0 0 30px rgba(234, 179, 8, 0.3);
-        }
-
-        /* Responsive design */
-        @media (max-width: 900px) {
-            .countdown {
-                gap: 1.5rem;
-            }
-
-            .time-box {
-                padding: 2rem 1rem;
-                min-width: 120px;
-            }
-
-            .time-value {
-                font-size: clamp(2.5rem, 6vw, 4rem);
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-
-            .countdown {
-                gap: 1rem;
-            }
-
-            .time-box {
-                padding: 1.5rem 0.8rem;
-                min-width: 100px;
-            }
-
-            h1 {
-                margin-bottom: 2rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .countdown {
-                gap: 0.8rem;
-            }
-
-            .time-box {
-                padding: 1.2rem 0.6rem;
-                min-width: 80px;
-            }
-
-            .time-value {
-                font-size: clamp(2rem, 5vw, 3rem);
-            }
-
-            .time-label {
-                font-size: clamp(0.6rem, 1.8vw, 0.85rem);
-            }
-        }
-
-        @media (max-width: 400px) {
-            .countdown {
-                gap: 0.5rem;
-            }
-
-            .time-box {
-                padding: 1rem 0.4rem;
-                min-width: 70px;
-            }
-        }
-
-        /* Landscape orientation optimizations */
-        @media (orientation: landscape) and (max-height: 600px) {
-            body {
-                padding: 1rem;
-            }
-
-            h1 {
-                margin-bottom: 1.5rem;
-            }
-
-            .countdown {
-                gap: 1.5rem;
-            }
-
-            .time-box {
-                padding: 1.5rem 1.2rem;
-                min-width: 110px;
-            }
-
-            .time-value {
-                font-size: clamp(2rem, 8vh, 3.5rem);
-            }
-
-            .time-label {
-                font-size: clamp(0.7rem, 2vh, 0.9rem);
-                margin-top: 0.5rem;
-            }
-        }
-
-        @media (orientation: landscape) and (max-height: 450px) {
-            body {
-                padding: 0.5rem;
-            }
-
-            h1 {
-                margin-bottom: 1rem;
-            }
-
-            .countdown {
-                gap: 1rem;
-            }
-
-            .time-box {
-                padding: 1rem 0.8rem;
-                min-width: 90px;
-            }
-
-            .time-value {
-                font-size: clamp(1.5rem, 6vh, 2.5rem);
-            }
-
-            .time-label {
-                font-size: clamp(0.6rem, 1.8vh, 0.75rem);
-                margin-top: 0.3rem;
-            }
-        }
-
-        /* Very wide screens in landscape */
-        @media (orientation: landscape) and (min-width: 1400px) {
-            .countdown {
-                gap: 3rem;
-            }
-
-            .time-box {
-                padding: 3rem 2rem;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Until Christmas </h1>
+        <h1 id="title">Until Christmas </h1>
         
         <div class="countdown">
             <div class="time-box">
@@ -317,8 +138,6 @@
                 <span class="time-label">Seconds</span>
             </div>
         </div>
-
-        <div class="message" id="message">Until Christmas Day</div>
     </div>
 
     <script>
@@ -344,30 +163,35 @@
         function updateCountdown() {
             const now = new Date();
             const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth(); // 0-11 (0 = January, 11 = December)
+            const currentDay = now.getDate();
             
-            // Determine next Christmas
-            let christmas = new Date(currentYear, 11, 25); // December 25
-            
-            if (now > christmas) {
-                christmas = new Date(currentYear + 1, 11, 25);
-            }
-
-            const timeDifference = christmas - now;
-
-            if (timeDifference <= 0) {
-                document.getElementById('message').innerHTML = "Merry Christmas!";
+            // Check if we're between December 25-31 (show "Merry Christmas")
+            if (currentMonth === 11 && currentDay >= 25) {
+                document.getElementById('title').innerHTML = "Merry Christmas!";
                 document.getElementById('days').textContent = "00";
                 document.getElementById('hours').textContent = "00";
                 document.getElementById('minutes').textContent = "00";
                 document.getElementById('seconds').textContent = "00";
                 return;
             }
+            
+            // Determine next Christmas
+            let christmas = new Date(currentYear, 11, 25); // December 25
+            
+            // If we're past Christmas (January-December 24), target next year's Christmas
+            if (now > christmas) {
+                christmas = new Date(currentYear + 1, 11, 25);
+            }
+
+            const timeDifference = christmas - now;
 
             const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
+            document.getElementById('title').innerHTML = "Until Christmas ";
             document.getElementById('days').textContent = String(days).padStart(2, '0');
             document.getElementById('hours').textContent = String(hours).padStart(2, '0');
             document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
